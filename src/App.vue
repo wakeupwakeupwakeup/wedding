@@ -400,27 +400,27 @@ onUnmounted(() => {
       </p>
     </div>
     <div
-      class="inline-flex flex-col items-center gap-5 py-4 w-full max-w-full mx-auto px-4"
+      class="inline-flex flex-col items-center gap-5 py-4 w-full max-w-72 mx-auto"
       v-scroll-animation
     >
       <h4 class="text-center w-full mb-4 text-xl">Анкета</h4>
       <form class="flex flex-col gap-5 w-full pb-5" @submit.prevent="submitForm">
-        <div class="flex items-center justify-between gap-2 border-b border-gray-300 w-full">
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
           <input
             v-model="fullName"
             type="text"
             placeholder="Полное имя"
-            class="w-full p-2 mb-2 outline-none"
+            class="w-full max-w-80 p-2 mb-2 outline-none"
             required
           />
           <IconPeople />
         </div>
-        <div class="flex items-center justify-between gap-2 border-b border-gray-300 w-full">
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
           <input
             v-model="phoneNumber"
             type="tel"
             placeholder="Телефон"
-            class="w-full p-2 mb-2 outline-none"
+            class="w-full max-w-80 p-2 mb-2 outline-none"
             required
             @input="formatPhone"
           />
@@ -428,16 +428,22 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col gap-5 w-full">
           <div class="flex items-center gap-2">
-            <input v-model="willAttend" type="checkbox" @change="handleAttendChange(willAttend)" />
-            <label>С удовольствием пойду</label>
+            <input
+              id="attend-checkbox"
+              v-model="willAttend"
+              type="checkbox"
+              @change="handleAttendChange(willAttend)"
+            />
+            <label for="attend-checkbox">С удовольствием пойду</label>
           </div>
           <div class="flex items-center gap-2">
             <input
+              id="not-attend-checkbox"
               v-model="willNotAttend"
               type="checkbox"
               @change="handleNotAttendChange(willNotAttend)"
             />
-            <label>К сожалению, не смогу прийти</label>
+            <label for="not-attend-checkbox">К сожалению, не смогу прийти</label>
           </div>
         </div>
 
