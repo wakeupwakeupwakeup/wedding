@@ -3,9 +3,17 @@ import PageArrow from '@/components/atoms/PageArrow.vue'
 import IconArrowDown from '@/components/icons/IconArrowDown.vue'
 import IconArrowRight from '@/components/icons/IconArrowRight.vue'
 import IconTelegram from '@/components/icons/IconTelegram.vue'
-import IconCall from '@/components/icons/IconCall.vue'
 import IconPeople from '@/components/icons/IconPeople.vue'
+import IconCall from '@/components/icons/IconCall.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
+
+// Добавляем переменные для формы
+const fullName = ref('')
+const phoneNumber = ref('')
+const willAttend = ref(false)
+const willNotAttend = ref(false)
+const isSubmitting = ref(false)
+const submitResult = ref({ success: false, message: '' })
 
 const program = [
   {
@@ -81,6 +89,84 @@ function openMap() {
 
 function openContactMethod(tgId: string) {
   window.open(`https://t.me/${tgId}`)
+}
+
+// Функции для обработки изменения чекбоксов
+function handleAttendChange(value: boolean) {
+  if (value) {
+    willNotAttend.value = false
+  }
+}
+
+function handleNotAttendChange(value: boolean) {
+  if (value) {
+    willAttend.value = false
+  }
+}
+
+// Функция для отправки данных на сервер
+async function submitForm() {
+  if (!fullName.value) {
+    submitResult.value = { success: false, message: 'Пожалуйста, укажите ваше имя' }
+    return
+  }
+
+  if (!phoneNumber.value) {
+    submitResult.value = { success: false, message: 'Пожалуйста, укажите ваш телефон' }
+    return
+  }
+
+  if (!willAttend.value && !willNotAttend.value) {
+    submitResult.value = { success: false, message: 'Пожалуйста, укажите, придете ли вы' }
+    return
+  }
+
+  isSubmitting.value = true
+  submitResult.value = { success: false, message: '' }
+
+  try {
+    // Используем URL сервера из переменной окружения
+    const SERVER_URL = import.meta.env.VITE_API_URL + '/api/submit-rsvp'
+
+    const response = await fetch(SERVER_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fullName: fullName.value,
+        phoneNumber: phoneNumber.value,
+        willAttend: willAttend.value,
+      }),
+    })
+
+    const result = await response.json()
+
+    if (result.success) {
+      submitResult.value = {
+        success: true,
+        message: result.message || 'Спасибо! Ваш ответ отправлен.',
+      }
+      // Очистка формы после успешной отправки
+      fullName.value = ''
+      phoneNumber.value = ''
+      willAttend.value = false
+      willNotAttend.value = false
+    } else {
+      submitResult.value = {
+        success: false,
+        message: result.message || 'Произошла ошибка при отправке.',
+      }
+    }
+  } catch (error) {
+    submitResult.value = {
+      success: false,
+      message: 'Произошла ошибка при отправке. Пожалуйста, свяжитесь с нами напрямую.',
+    }
+    console.error('Error sending form:', error)
+  } finally {
+    isSubmitting.value = false
+  }
 }
 
 onMounted(() => {
@@ -289,30 +375,62 @@ onUnmounted(() => {
       v-scroll-animation
     >
       <h4 class="text-center w-full mb-4 text-xl">Анкета</h4>
-      <form class="flex flex-col gap-5 w-full pb-5">
+      <form class="flex flex-col gap-5 w-full pb-5" @submit.prevent="submitForm">
         <div class="flex items-center justify-between gap-2 border-b border-gray-300">
           <input
+            v-model="fullName"
             type="text"
             placeholder="Полное имя"
             class="w-full max-w-80 p-2 mb-2 outline-none"
+            required
           />
           <IconPeople />
         </div>
         <div class="flex items-center justify-between gap-2 border-b border-gray-300">
-          <input type="tel" placeholder="Телефон" class="w-full max-w-80 p-2 mb-2 outline-none" />
+          <input
+            v-model="phoneNumber"
+            type="tel"
+            placeholder="Телефон"
+            class="w-full max-w-80 p-2 mb-2 outline-none"
+            required
+          />
           <IconCall />
         </div>
         <div class="flex flex-col gap-5 w-full">
           <div class="flex items-center gap-2">
-            <input type="checkbox" />
+            <input v-model="willAttend" type="checkbox" @change="handleAttendChange(willAttend)" />
             <label>С удовольствием пойду</label>
           </div>
           <div class="flex items-center gap-2">
-            <input type="checkbox" />
+            <input
+              v-model="willNotAttend"
+              type="checkbox"
+              @change="handleNotAttendChange(willNotAttend)"
+            />
             <label>К сожалению, не смогу прийти</label>
           </div>
         </div>
-        <button>Отправить</button>
+
+        <button
+          type="submit"
+          :disabled="isSubmitting"
+          class="relative bg-black text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-all disabled:opacity-70"
+        >
+          <span v-if="isSubmitting">Отправка...</span>
+          <span v-else>Отправить</span>
+        </button>
+
+        <!-- Сообщение о результате отправки -->
+        <div
+          v-if="submitResult.message"
+          class="mt-2 text-center p-2 rounded-md"
+          :class="{
+            'bg-green-100 text-green-800': submitResult.success,
+            'bg-red-100 text-red-800': !submitResult.success,
+          }"
+        >
+          {{ submitResult.message }}
+        </div>
       </form>
       <div class="flex items-center gap-2 w-full my-4">
         <div class="h-px flex-1 bg-gray-300" />
