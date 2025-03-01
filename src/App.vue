@@ -442,7 +442,7 @@ onUnmounted(() => {
         <div
           v-for="(item, index) in contactMethods"
           :key="item.name[0]"
-          class="flex flex-col gap-1"
+          class="flex flex-col gap-1 cursor-pointer"
           v-scroll-animation="{ delay: index * 200 }"
           @click="openContactMethod(item.telegram)"
         >
