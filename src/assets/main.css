@@ -14,27 +14,19 @@
   flex-direction: column;
 }
 
+html {
+  font-family: var(--font-family-cyrillic);
+}
+
 html,
 body {
   @apply overflow-x-hidden max-w-full;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-}
-
 h1,
 h2 {
   @apply text-4xl uppercase text-center;
+  font-family: var(--font-family-cyrillic);
 }
 
 h2 {
@@ -43,18 +35,31 @@ h2 {
 
 h3 {
   @apply text-2xl uppercase text-center;
+  font-family: var(--font-family-cyrillic);
 }
 
 h4 {
   @apply text-xl;
+  font-family: var(--font-family-cyrillic);
 }
 
 p {
-  @apply text-center px-1;
+  @apply text-center px-1 text-base;
+  font-family: var(--font-family-cyrillic);
 }
 
 button {
-  @apply bg-neutral-950 text-white flex items-center justify-center gap-2 p-2 w-full uppercase;
+  @apply bg-neutral-950 text-white flex items-center justify-center gap-2 p-2 w-full uppercase cursor-pointer;
+  font-family: var(--font-family-cyrillic);
+}
+
+input,
+label {
+  font-family: var(--font-family-cyrillic);
+}
+
+.latin-text {
+  font-family: var(--font-family-main);
 }
 
 .border-break {

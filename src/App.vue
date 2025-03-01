@@ -32,6 +32,21 @@ const dressCode = [
   },
 ]
 
+const dressCodeTextLiterals = ['D', 'r', 'e', 's', 's', ' ', 'c', 'o', 'd', 'e']
+
+const contactMethods = [
+  {
+    name: ['Максим', 'Максиму'],
+    telegram: '@max_kuznetsov',
+    phone: '+79161234567',
+  },
+  {
+    name: ['Виталина', 'Виталине'],
+    telegram: '@vitalina_kuznetsova',
+    phone: '+79161234567',
+  },
+]
+
 // Обратный отсчет до свадьбы
 const weddingDate = new Date('2025-06-04T16:00:00')
 const days = ref(0)
@@ -59,6 +74,10 @@ const updateCountdown = () => {
 
 let countdownInterval: number | null = null
 
+function openMap() {
+  window.open('https://yandex.ru/maps/-/CHu3UYJz', '_blank')
+}
+
 onMounted(() => {
   updateCountdown()
   countdownInterval = window.setInterval(updateCountdown, 1000)
@@ -79,25 +98,25 @@ onUnmounted(() => {
       <PageArrow />
       <div class="flex flex-col items-center gap-2 pb-5">
         <p>В нашей жизни скоро состоится важное событие - наша свадьба!</p>
-        <div class="flex items-center justify-center gap-2 text-lg">
+        <div class="flex items-center justify-end gap-2 text-lg">
           <div class="flex items-center">
             <span class="font-bold">{{ days }}</span>
-            <span class="text-sm">д</span>
+            <span class="text-sm leading-none">д</span>
           </div>
           <span>-</span>
           <div class="flex items-center">
             <span class="font-bold">{{ hours }}</span>
-            <span class="text-sm">ч</span>
+            <span class="text-sm leading-none">ч</span>
           </div>
           <span>-</span>
           <div class="flex items-center">
             <span class="font-bold">{{ minutes }}</span>
-            <span class="text-sm">м</span>
+            <span class="text-sm leading-none">м</span>
           </div>
           <span>-</span>
           <div class="flex items-center">
             <span class="font-bold">{{ seconds }}</span>
-            <span class="text-sm">с</span>
+            <span class="text-sm leading-none">с</span>
           </div>
         </div>
       </div>
@@ -113,7 +132,7 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-col items-center justify-between gap-2 px-2 py-10 w-1/2">
           <div class="flex flex-col items-center gap-4">
-            <h3>Save the date</h3>
+            <h3 class="latin-text">Save the date</h3>
             <p class="text-lg italic">04.06.2025</p>
           </div>
           <IconArrowDown />
@@ -147,7 +166,7 @@ onUnmounted(() => {
                 class="flex flex-col h-full items-center justify-center px-5 border-r-2 border-black"
               >
                 <PageArrow />
-                <button class="w-full">Карта <IconArrowRight /></button>
+                <button @click="openMap" class="w-full">Карта <IconArrowRight /></button>
               </div>
             </div>
 
@@ -171,7 +190,13 @@ onUnmounted(() => {
     <section>
       <div class="flex flex-col gap-8 items-center">
         <div class="flex">
-          <h2 class="vertical-text text-7xl px-0 py-3">Dress code</h2>
+          <div
+            class="vertical-text flex justify-between text-7xl px-0 py-3 uppercase tracking-wide latin-text"
+          >
+            <span v-for="letter in dressCodeTextLiterals" :key="letter" class="my-1">
+              {{ letter === ' ' ? '\u00A0' : letter }}
+            </span>
+          </div>
           <div class="w-full">
             <img src="@/assets/img/dresscode.jpg" alt="Dress code" class="object-fit" />
           </div>
@@ -211,21 +236,53 @@ onUnmounted(() => {
       <PageArrow />
     </section>
   </main>
-  <footer class="w-full">
-    <div class="w-full">
-      <div class="border-b border-gray-100 py-4 flex justify-center w-full">
-        <p class="text-black/70 w-full text-center px-4">
-          Будем очень признательны, если Вы сообщите нам о своем решении до
-          <span class="text-black">04.04.2025</span>
-        </p>
-      </div>
-      <div class="w-full flex flex-col items-center py-4">
-        <h4 class="text-center w-full mb-4">Анкета</h4>
+  <footer class="flex flex-col items-center">
+    <div class="border-b border-gray-100 py-4 flex justify-center w-full">
+      <p class="text-black/70 w-full text-center px-4">
+        Будем очень признательны, если Вы сообщите нам о своем решении до
+        <span class="text-black">04.04.2025</span>
+      </p>
+    </div>
+    <div class="inline-flex flex-col items-center py-4 w-full max-w-72 mx-auto">
+      <h4 class="text-center w-full mb-4">Анкета</h4>
+      <form>
         <input
           type="text"
-          placeholder="Ваше имя"
+          placeholder="Полное имя"
           class="w-full max-w-80 p-2 border border-gray-300 mb-2"
         />
+        <input
+          type="tel"
+          placeholder="Телефон"
+          class="w-full max-w-80 p-2 border border-gray-300 mb-2"
+        />
+        <div class="flex flex-col w-full">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label>С удовольствием пойду</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" />
+            <label>К сожалению, не смогу прийти</label>
+          </div>
+        </div>
+        <button>Отправить</button>
+      </form>
+      <div class="flex items-center gap-2 w-full my-4">
+        <div class="h-px flex-1 bg-gray-300" />
+        <span class="px-2">или</span>
+        <div class="h-px flex-1 bg-gray-300" />
+      </div>
+      <p>Узнайте, как связаться с нами другим способом</p>
+      <div class="flex flex-col gap-2">
+        <div v-for="item in contactMethods" :key="item.name" class="flex flex-col gap-2">
+          <div class="flex items-center justify-between gap-2">
+            <span>{{ item.name[0] }}</span> в телеграм
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <span>Позвонить {{ item.name[1] }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
