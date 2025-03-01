@@ -104,6 +104,32 @@ function handleNotAttendChange(value: boolean) {
   }
 }
 
+// Функция для проверки правильности формата телефона
+function isValidPhoneNumber(phone: string): boolean {
+  // Проверяем, что телефон соответствует формату +7XXXXXXXXXX
+  // и содержит 12 символов (включая +7 и 10 цифр номера)
+  return /^\+7\d{10}$/.test(phone)
+}
+
+function formatPhone() {
+  let value = event.target.value
+
+  // Разрешаем только цифры после +7
+  value = value.replace(/[^+\d]/g, '')
+
+  // Запрещаем удалять +7
+  if (!value.startsWith('+7')) {
+    value = '+7'
+  }
+
+  // Ограничиваем длину
+  if (value.length > 12) {
+    value = value.slice(0, 12)
+  }
+
+  phoneNumber.value = value
+}
+
 // Функция для отправки данных на сервер
 async function submitForm() {
   if (!fullName.value) {
@@ -111,8 +137,11 @@ async function submitForm() {
     return
   }
 
-  if (!phoneNumber.value) {
-    submitResult.value = { success: false, message: 'Пожалуйста, укажите ваш телефон' }
+  if (!phoneNumber.value || !isValidPhoneNumber(phoneNumber.value)) {
+    submitResult.value = {
+      success: false,
+      message: 'Пожалуйста, укажите корректный номер телефона',
+    }
     return
   }
 
@@ -393,6 +422,7 @@ onUnmounted(() => {
             placeholder="Телефон"
             class="w-full max-w-80 p-2 mb-2 outline-none"
             required
+            @input="formatPhone"
           />
           <IconCall />
         </div>
