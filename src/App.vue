@@ -2,6 +2,9 @@
 import PageArrow from '@/components/atoms/PageArrow.vue'
 import IconArrowDown from '@/components/icons/IconArrowDown.vue'
 import IconArrowRight from '@/components/icons/IconArrowRight.vue'
+import IconTelegram from '@/components/icons/IconTelegram.vue'
+import IconCall from '@/components/icons/IconCall.vue'
+import IconPeople from '@/components/icons/IconPeople.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const program = [
@@ -94,7 +97,7 @@ onUnmounted(() => {
   <main class="main-container">
     <img src="@/assets/img/main-photo.jpg" alt="Максим & Виталина" />
     <section>
-      <h1 v-scroll-animation>Максим & Виталина</h1>
+      <h1 v-scroll-animation class="pt-2">Максим & Виталина</h1>
       <PageArrow v-scroll-animation="{ delay: 100 }" />
       <div class="flex flex-col items-center gap-2 pb-5" v-scroll-animation="{ delay: 200 }">
         <p>В нашей жизни скоро состоится важное событие - наша свадьба!</p>
@@ -150,7 +153,7 @@ onUnmounted(() => {
     <section>
       <div>
         <div class="p-2 pb-0">
-          <div class="border-2 border-b-0 flex flex-col items-center gap-16 border-black">
+          <div class="border-2 border-b-0 flex flex-col items-center pb-8 gap-16 border-black">
             <h2 v-scroll-animation>Локация</h2>
             <p v-scroll-animation>
               г. Москва, пос. Новобутаково, дом 44 стр. 1, «Английский дом и Веранда»
@@ -158,29 +161,33 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="flex items-start w-full">
-          <div class="w-1/2 h-80 flex flex-col justify-center overflow-hidden">
-            <div class="bg-white h-8 w-full" />
-            <div class="flex-grow overflow-hidden">
-              <img
-                src="@/assets/img/location.jpg"
-                alt="Локация"
-                class="w-full h-full object-cover"
-              />
+          <div
+            class="w-1/2 h-80 flex flex-col justify-center"
+            v-scroll-animation="{ animation: 'fade-in-left' }"
+          >
+            <div class="overflow-hidden relative">
+              <div class="absolute -top-8 left-0 bg-white h-8 w-full z-10" />
+              <img src="@/assets/img/location.jpg" alt="Локация" class="h-80 object-cover" />
             </div>
           </div>
-          <div class="w-1/2 flex flex-col h-80 items-center">
-            <div class="w-full h-full grow pr-2">
+          <div class="w-1/2 flex flex-col h-80 justify-between items-center">
+            <div class="w-full h-full pr-2 pb-4">
               <div
-                class="flex flex-col h-full items-center justify-center px-5 border-r-2 border-black"
+                class="flex flex-col h-full items-center justify-between px-5 border-r-2 border-black"
               >
                 <PageArrow />
                 <button @click="openMap" class="w-full">Карта <IconArrowRight /></button>
               </div>
             </div>
-
-            <p class="border-break bg-neutral-950 text-white !text-2xl p-8 w-full text-center">
-              Сбор гостей в 16:00
-            </p>
+            <div class="relative shrink-0">
+              <div class="absolute -top-8 left-0 bg-white h-8 w-full z-10" />
+              <p
+                class="bg-neutral-950 text-white !text-2xl p-8 w-full text-center mt-4"
+                v-scroll-animation="{ animation: 'zoom-in' }"
+              >
+                Сбор гостей в 16:00
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -202,17 +209,27 @@ onUnmounted(() => {
     </section>
     <section>
       <div class="flex flex-col gap-8 items-center">
-        <div class="flex">
+        <div class="flex" style="height: 475px">
           <div
             class="vertical-text flex justify-between text-7xl px-0 py-3 uppercase tracking-wide latin-text"
+            style="height: 475px"
             v-scroll-animation="{ animation: 'fade-in-left' }"
           >
             <span v-for="letter in dressCodeTextLiterals" :key="letter" class="my-1">
               {{ letter === ' ' ? '\u00A0' : letter }}
             </span>
           </div>
-          <div class="w-full" v-scroll-animation="{ animation: 'fade-in-right', delay: 200 }">
-            <img src="@/assets/img/dresscode.jpg" alt="Dress code" class="object-fit" />
+          <div
+            class="w-full relative overflow-hidden"
+            style="height: 475px"
+            v-scroll-animation="{ animation: 'fade-in-right', delay: 200 }"
+          >
+            <img
+              src="@/assets/img/dresscode.jpg"
+              alt="Dress code"
+              class="dress-code-image w-full h-full object-cover"
+              style="display: block; min-height: 100%"
+            />
           </div>
         </div>
         <p v-scroll-animation>
@@ -265,20 +282,25 @@ onUnmounted(() => {
         <span class="text-black">04.04.2025</span>
       </p>
     </div>
-    <div class="inline-flex flex-col items-center py-4 w-full max-w-72 mx-auto" v-scroll-animation>
-      <h4 class="text-center w-full mb-4">Анкета</h4>
-      <form>
-        <input
-          type="text"
-          placeholder="Полное имя"
-          class="w-full max-w-80 p-2 border border-gray-300 mb-2"
-        />
-        <input
-          type="tel"
-          placeholder="Телефон"
-          class="w-full max-w-80 p-2 border border-gray-300 mb-2"
-        />
-        <div class="flex flex-col w-full">
+    <div
+      class="inline-flex flex-col items-center gap-5 py-4 w-full max-w-72 mx-auto"
+      v-scroll-animation
+    >
+      <h4 class="text-center w-full mb-4 text-xl">Анкета</h4>
+      <form class="flex flex-col gap-5 w-full pb-5">
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
+          <input
+            type="text"
+            placeholder="Полное имя"
+            class="w-full max-w-80 p-2 mb-2 outline-none"
+          />
+          <IconPeople />
+        </div>
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
+          <input type="tel" placeholder="Телефон" class="w-full max-w-80 p-2 mb-2 outline-none" />
+          <IconCall />
+        </div>
+        <div class="flex flex-col gap-5 w-full">
           <div class="flex items-center gap-2">
             <input type="checkbox" />
             <label>С удовольствием пойду</label>
@@ -296,18 +318,29 @@ onUnmounted(() => {
         <div class="h-px flex-1 bg-gray-300" />
       </div>
       <p>Узнайте, как связаться с нами другим способом</p>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 w-full">
         <div
           v-for="(item, index) in contactMethods"
           :key="item.name[0]"
-          class="flex flex-col gap-2"
+          class="flex flex-col gap-1"
           v-scroll-animation="{ delay: index * 200 }"
         >
-          <div class="flex items-center justify-between gap-2">
-            <span>{{ item.name[0] }}</span> в телеграм
+          <div
+            class="flex items-center justify-between gap-2 w-full p-2 border border-gray-300 rounded-md"
+          >
+            <span class="text-black/70"
+              ><span class="text-black">{{ item.name[0] }}</span> в телеграм</span
+            >
+            <IconTelegram />
           </div>
-          <div class="flex items-center justify-between gap-2">
-            <span>Позвонить {{ item.name[1] }}</span>
+          <div
+            class="flex items-center justify-between gap-2 p-2 border border-gray-300 rounded-md"
+          >
+            <span class="text-black/70">
+              Позвонить
+              <span class="text-black">{{ item.name[1] }}</span>
+            </span>
+            <IconCall />
           </div>
         </div>
       </div>
@@ -388,5 +421,50 @@ section {
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Стили для контейнеров с фиксированной высотой */
+.h-80 {
+  height: 20rem;
+  min-height: 20rem;
+  max-height: 20rem;
+  box-sizing: border-box;
+}
+
+/* Стили для контейнеров с изображениями */
+.flex-grow.overflow-hidden[style*='height'] {
+  flex-grow: 0 !important; /* Предотвращаем изменение высоты */
+  flex-shrink: 0 !important;
+}
+
+/* Стили для контейнеров с фиксированной высотой в пикселях */
+.h-\[328px\] {
+  height: 328px !important;
+  min-height: 328px !important;
+  max-height: 328px !important;
+  box-sizing: border-box;
+}
+
+/* Стили для изображений с сохранением пропорций */
+.object-cover.absolute.inset-0 {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Специальный стиль для изображения дресс-кода */
+.dress-code-image {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  min-height: 100% !important;
+  position: relative !important;
+}
+
+/* Стили для относительного позиционирования */
+.relative {
+  position: relative;
+  overflow: hidden;
 }
 </style>
