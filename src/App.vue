@@ -157,7 +157,7 @@ async function submitForm() {
     // Используем URL сервера из переменной окружения
     const SERVER_URL = import.meta.env.VITE_API_URL + '/api/submit-rsvp'
 
-    await fetch(SERVER_URL, {
+    const response = await fetch(SERVER_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -167,25 +167,64 @@ async function submitForm() {
         phoneNumber: phoneNumber.value,
         willAttend: willAttend.value,
       }),
-      mode: 'no-cors', // Добавляем режим no-cors для обхода ограничений CORS
+      credentials: 'include',
+      // Убираем режим no-cors, чтобы получать реальные статусы ответов
     })
 
-    // В режиме no-cors мы не можем прочитать тело ответа
-    // Поэтому просто считаем, что запрос успешен, если не было исключения
-    submitResult.value = {
-      success: true,
-      message: 'Спасибо! Ваш ответ отправлен.',
+    // Проверяем статус ответа
+    if (!response.ok) {
+      // Если статус 401, значит проблема с авторизацией
+      if (response.status === 401) {
+        submitResult.value = {
+          success: false,
+          message: 'Ошибка авторизации. Пожалуйста, свяжитесь с организаторами.',
+        }
+      } else {
+        submitResult.value = {
+          success: false,
+          message: `Ошибка сервера: ${response.status}. Пожалуйста, свяжитесь с нами напрямую.`,
+        }
+      }
+      return
     }
 
-    // Очистка формы после успешной отправки
-    fullName.value = ''
-    phoneNumber.value = ''
-    willAttend.value = false
-    willNotAttend.value = false
+    // Пытаемся прочитать ответ как JSON
+    let result
+    try {
+      result = await response.json()
+    } catch {
+      // Если не удалось прочитать JSON, считаем что запрос успешен
+      result = { success: true }
+    }
+
+    if (result.success) {
+      submitResult.value = {
+        success: true,
+        message: result.message || 'Спасибо! Ваш ответ отправлен.',
+      }
+      // Очистка формы после успешной отправки
+      fullName.value = ''
+      phoneNumber.value = ''
+      willAttend.value = false
+      willNotAttend.value = false
+    } else {
+      submitResult.value = {
+        success: false,
+        message: result.message || 'Произошла ошибка при отправке.',
+      }
+    }
   } catch (error) {
-    submitResult.value = {
-      success: false,
-      message: 'Произошла ошибка при отправке. Пожалуйста, свяжитесь с нами напрямую.',
+    // Проверяем, является ли ошибка связанной с CORS
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      submitResult.value = {
+        success: false,
+        message: 'Ошибка CORS. Пожалуйста, свяжитесь с нами напрямую через Telegram.',
+      }
+    } else {
+      submitResult.value = {
+        success: false,
+        message: 'Произошла ошибка при отправке. Пожалуйста, свяжитесь с нами напрямую.',
+      }
     }
     console.error('Error sending form:', error)
   } finally {
