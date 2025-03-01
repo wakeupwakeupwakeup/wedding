@@ -91,12 +91,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main>
+  <main class="main-container">
     <img src="@/assets/img/main-photo.jpg" alt="Максим & Виталина" />
     <section>
-      <h1>Максим & Виталина</h1>
-      <PageArrow />
-      <div class="flex flex-col items-center gap-2 pb-5">
+      <h1 v-scroll-animation>Максим & Виталина</h1>
+      <PageArrow v-scroll-animation="{ delay: 100 }" />
+      <div class="flex flex-col items-center gap-2 pb-5" v-scroll-animation="{ delay: 200 }">
         <p>В нашей жизни скоро состоится важное событие - наша свадьба!</p>
         <div class="flex items-center justify-end gap-2 text-lg">
           <div class="flex items-center">
@@ -123,14 +123,20 @@ onUnmounted(() => {
     </section>
     <section class="flex flex-col items-center">
       <div class="flex">
-        <div class="w-1/2 aspect-[3/4] overflow-hidden">
+        <div
+          class="w-1/2 aspect-[3/4] overflow-hidden"
+          v-scroll-animation="{ animation: 'fade-in-left' }"
+        >
           <img
             src="@/assets/img/photo-1.jpg"
             alt="Максим & Виталина"
             class="w-full h-full object-cover"
           />
         </div>
-        <div class="flex flex-col items-center justify-between gap-2 px-2 py-10 w-1/2">
+        <div
+          class="flex flex-col items-center justify-between gap-2 px-2 py-10 w-1/2"
+          v-scroll-animation="{ animation: 'fade-in-right', delay: 200 }"
+        >
           <div class="flex flex-col items-center gap-4">
             <h3 class="latin-text">Save the date</h3>
             <p class="text-lg italic">04.06.2025</p>
@@ -139,14 +145,16 @@ onUnmounted(() => {
           <p>В этот чудесный день когда мы станем семьей</p>
         </div>
       </div>
-      <p class="p-5">Мы приглашаем вас разделить с нами этот особенный день!</p>
+      <p class="p-5" v-scroll-animation>Мы приглашаем вас разделить с нами этот особенный день!</p>
     </section>
     <section>
       <div>
         <div class="p-2 pb-0">
           <div class="border-2 border-b-0 flex flex-col items-center gap-16 border-black">
-            <h2>Локация</h2>
-            <p>г. Москва, пос. Новобутаково, дом 44 стр. 1, «Английский дом и Веранда»</p>
+            <h2 v-scroll-animation>Локация</h2>
+            <p v-scroll-animation>
+              г. Москва, пос. Новобутаково, дом 44 стр. 1, «Английский дом и Веранда»
+            </p>
           </div>
         </div>
         <div class="flex items-start w-full">
@@ -170,7 +178,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <p class="border-break bg-neutral-950 text-white text-2xl p-8 w-full text-center">
+            <p class="border-break bg-neutral-950 text-white !text-2xl p-8 w-full text-center">
               Сбор гостей в 16:00
             </p>
           </div>
@@ -178,10 +186,15 @@ onUnmounted(() => {
       </div>
     </section>
     <section>
-      <h2>Программа дня</h2>
-      <PageArrow />
+      <h2 v-scroll-animation>Программа дня</h2>
+      <PageArrow v-scroll-animation="{ delay: 100 }" />
       <div class="flex flex-col gap-8 pb-5">
-        <div v-for="item in program" :key="item.title" class="flex flex-col items-center gap-2">
+        <div
+          v-for="(item, index) in program"
+          :key="item.title"
+          class="flex flex-col items-center gap-2"
+          v-scroll-animation="{ delay: index * 200 }"
+        >
           <h4>{{ item.time }} - {{ item.title }}</h4>
           <p>{{ item.description }}</p>
         </div>
@@ -192,20 +205,24 @@ onUnmounted(() => {
         <div class="flex">
           <div
             class="vertical-text flex justify-between text-7xl px-0 py-3 uppercase tracking-wide latin-text"
+            v-scroll-animation="{ animation: 'fade-in-left' }"
           >
             <span v-for="letter in dressCodeTextLiterals" :key="letter" class="my-1">
               {{ letter === ' ' ? '\u00A0' : letter }}
             </span>
           </div>
-          <div class="w-full">
+          <div class="w-full" v-scroll-animation="{ animation: 'fade-in-right', delay: 200 }">
             <img src="@/assets/img/dresscode.jpg" alt="Dress code" class="object-fit" />
           </div>
         </div>
-        <p>
+        <p v-scroll-animation>
           Мы очень ждём и с трепетом готовимся к нашему празднику! Будем очень благодарны, если вы
           поддержите цветовую гамму нашей свадьбы.
         </p>
-        <div class="flex gap-1 justify-center w-full px-2">
+        <div
+          class="flex gap-1 justify-center w-full px-2"
+          v-scroll-animation="{ animation: 'zoom-in' }"
+        >
           <img src="@/assets/img/material.jpg" alt="Dress code" class="w-1/6 h-10" />
           <div class="bg-[#D9D9D9] w-1/6 h-10 shrink-0 grow" />
           <div class="bg-[#8F9095] w-1/6 h-10 shrink-0 grow" />
@@ -213,16 +230,21 @@ onUnmounted(() => {
           <div class="bg-[#000000] w-1/6 h-10 shrink-0 grow" />
         </div>
         <div class="flex flex-col gap-8">
-          <div v-for="item in dressCode" :key="item.title" class="flex flex-col items-center gap-2">
+          <div
+            v-for="(item, index) in dressCode"
+            :key="item.title"
+            class="flex flex-col items-center gap-2"
+            v-scroll-animation="{ delay: index * 200 }"
+          >
             <h4>{{ item.title }}</h4>
             <p>{{ item.description }}</p>
           </div>
         </div>
-        <PageArrow class="!pt-0" />
+        <PageArrow class="!pt-0" v-scroll-animation />
       </div>
     </section>
     <section>
-      <div class="flex flex-col items-center gap-4">
+      <div class="flex flex-col items-center gap-4" v-scroll-animation>
         <h2>Детали</h2>
         <p>
           Ваши улыбки и смех подарят нам незабываемое счастье в этот день, а пожелания в конвертах
@@ -233,17 +255,17 @@ onUnmounted(() => {
           свадебное путешествие.
         </p>
       </div>
-      <PageArrow />
+      <PageArrow v-scroll-animation="{ delay: 100 }" />
     </section>
   </main>
-  <footer class="flex flex-col items-center">
-    <div class="border-b border-gray-100 py-4 flex justify-center w-full">
+  <footer class="footer-container flex flex-col items-center">
+    <div class="border-b border-gray-100 py-4 flex justify-center w-full" v-scroll-animation>
       <p class="text-black/70 w-full text-center px-4">
         Будем очень признательны, если Вы сообщите нам о своем решении до
         <span class="text-black">04.04.2025</span>
       </p>
     </div>
-    <div class="inline-flex flex-col items-center py-4 w-full max-w-72 mx-auto">
+    <div class="inline-flex flex-col items-center py-4 w-full max-w-72 mx-auto" v-scroll-animation>
       <h4 class="text-center w-full mb-4">Анкета</h4>
       <form>
         <input
@@ -275,7 +297,12 @@ onUnmounted(() => {
       </div>
       <p>Узнайте, как связаться с нами другим способом</p>
       <div class="flex flex-col gap-2">
-        <div v-for="item in contactMethods" :key="item.name" class="flex flex-col gap-2">
+        <div
+          v-for="(item, index) in contactMethods"
+          :key="item.name[0]"
+          class="flex flex-col gap-2"
+          v-scroll-animation="{ delay: index * 200 }"
+        >
           <div class="flex items-center justify-between gap-2">
             <span>{{ item.name[0] }}</span> в телеграм
           </div>
@@ -287,3 +314,79 @@ onUnmounted(() => {
     </div>
   </footer>
 </template>
+
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  /* Предотвращаем горизонтальный скролл */
+  overflow-x: hidden;
+  /* Разрешаем только один вертикальный скролл */
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Специальные классы для основных контейнеров */
+.main-container,
+.footer-container {
+  width: 100%;
+  overflow: visible !important; /* Принудительно убираем скроллы */
+  position: relative;
+  box-sizing: border-box;
+  /* Убираем возможные отступы, которые могут создавать скроллы */
+  margin: 0;
+  padding: 0;
+}
+
+/* Предотвращаем скролл внутри основных контейнеров */
+main,
+footer {
+  width: 100%;
+  /* Полностью убираем скроллы для контейнеров */
+  overflow: visible !important; /* Принудительно убираем скроллы */
+  /* Убираем возможные свойства, которые могут создавать скроллы */
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Оптимизация для анимаций */
+[v-scroll-animation] {
+  /* Улучшаем производительность анимаций */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Предотвращаем возможные проблемы с позиционированием */
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: 1;
+}
+
+/* Дополнительные стили для предотвращения скроллов */
+section {
+  overflow: visible !important; /* Принудительно убираем скроллы */
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Убираем возможные скроллы у контейнеров с overflow-hidden */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Исправляем проблемы с контейнерами, которые могут создавать скроллы */
+.flex,
+.flex-col,
+.items-center,
+.justify-center {
+  overflow: visible !important;
+}
+
+/* Исправляем проблемы с изображениями */
+img {
+  max-width: 100%;
+  height: auto;
+}
+</style>

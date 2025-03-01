@@ -2,5 +2,8 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'
+import directives from './directives'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(directives)
+app.mount('#app')
