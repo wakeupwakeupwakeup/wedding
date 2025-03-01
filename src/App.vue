@@ -40,13 +40,11 @@ const dressCodeTextLiterals = ['D', 'r', 'e', 's', 's', ' ', 'c', 'o', 'd', 'e']
 const contactMethods = [
   {
     name: ['Максим', 'Максиму'],
-    telegram: '@max_kuznetsov',
-    phone: '+79161234567',
+    telegram: 'maksim908908',
   },
   {
     name: ['Виталина', 'Виталине'],
-    telegram: '@vitalina_kuznetsova',
-    phone: '+79161234567',
+    telegram: 'so_vi_so',
   },
 ]
 
@@ -79,6 +77,10 @@ let countdownInterval: number | null = null
 
 function openMap() {
   window.open('https://yandex.ru/maps/-/CHu3UYJz', '_blank')
+}
+
+function openContactMethod(tgId: string) {
+  window.open(`https://t.me/${tgId}`)
 }
 
 onMounted(() => {
@@ -324,26 +326,22 @@ onUnmounted(() => {
           :key="item.name[0]"
           class="flex flex-col gap-1"
           v-scroll-animation="{ delay: index * 200 }"
+          @click="openContactMethod(item.telegram)"
         >
           <div
             class="flex items-center justify-between gap-2 w-full p-2 border border-gray-300 rounded-md"
           >
-            <span class="text-black/70"
-              ><span class="text-black">{{ item.name[0] }}</span> в телеграм</span
+            <span class="text-black/70">
+              <span class="text-black">{{ item.name[0] }}</span> в телеграм</span
             >
             <IconTelegram />
           </div>
-          <div
-            class="flex items-center justify-between gap-2 p-2 border border-gray-300 rounded-md"
-          >
-            <span class="text-black/70">
-              Позвонить
-              <span class="text-black">{{ item.name[1] }}</span>
-            </span>
-            <IconCall />
-          </div>
         </div>
       </div>
+    </div>
+    <div class="flex flex-col items-center gap-4" v-scroll-animation>
+      <h4 class="!text-3xl text-center pt-10">До встречи!</h4>
+      <img src="@/assets/img/farewell.jpg" alt="Farewell" class="w-full h-full object-cover" />
     </div>
   </footer>
 </template>
