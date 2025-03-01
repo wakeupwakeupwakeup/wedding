@@ -400,27 +400,27 @@ onUnmounted(() => {
       </p>
     </div>
     <div
-      class="inline-flex flex-col items-center gap-5 py-4 w-full max-w-72 mx-auto"
+      class="inline-flex flex-col items-center gap-5 py-4 w-full max-w-full mx-auto px-4"
       v-scroll-animation
     >
       <h4 class="text-center w-full mb-4 text-xl">Анкета</h4>
       <form class="flex flex-col gap-5 w-full pb-5" @submit.prevent="submitForm">
-        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300 w-full">
           <input
             v-model="fullName"
             type="text"
             placeholder="Полное имя"
-            class="w-full max-w-80 p-2 mb-2 outline-none"
+            class="w-full p-2 mb-2 outline-none"
             required
           />
           <IconPeople />
         </div>
-        <div class="flex items-center justify-between gap-2 border-b border-gray-300">
+        <div class="flex items-center justify-between gap-2 border-b border-gray-300 w-full">
           <input
             v-model="phoneNumber"
             type="tel"
             placeholder="Телефон"
-            class="w-full max-w-80 p-2 mb-2 outline-none"
+            class="w-full p-2 mb-2 outline-none"
             required
             @input="formatPhone"
           />
