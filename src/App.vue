@@ -155,7 +155,7 @@ async function submitForm() {
 
   try {
     // Используем URL сервера из переменной окружения
-    const SERVER_URL = import.meta.env.VITE_API_URL + '/api/submit-rsvp'
+    const SERVER_URL = import.meta.env.VITE_API_URL
 
     const response = await fetch(SERVER_URL, {
       method: 'POST',
