@@ -84,7 +84,7 @@ const updateCountdown = () => {
 let countdownInterval: number | null = null
 
 function openMap() {
-  window.open('https://yandex.ru/maps/-/CHu3UYJz', '_blank')
+  window.open('https://yandex.ru/maps/-/CCUZeRdFkC', '_blank')
 }
 
 function openContactMethod(tgId: string) {
