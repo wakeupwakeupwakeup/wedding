@@ -167,8 +167,6 @@ async function submitForm() {
         phoneNumber: phoneNumber.value,
         willAttend: willAttend.value,
       }),
-      credentials: 'include',
-      // Убираем режим no-cors, чтобы получать реальные статусы ответов
     })
 
     // Проверяем статус ответа
